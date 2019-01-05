@@ -101,7 +101,7 @@
                     <label for="lastWords">Ich wollte noch sagen, dass...</label>
                     <input type="text" class="form-control" id="lastWords">
                 </div>
-                <button type="submit" class="btn btn-primary">Senden</button>
+                <button type="submit" id="submit" class="btn btn-primary" >Senden</button>
             </form>
         </div>
 
@@ -116,6 +116,17 @@
         
         <script src="./js/bp.js"></script>
         <script src="./js/application.js"></script>
+        <script>
+            $("#submit").on("click", function(){
+                console.log(document.getElementById("name").value === "" || document.getElementById("eMail").value === "");
+                if(document.getElementById("name").value === "" || document.getElementById("eMail").value === ""){
+                    alert("Bitte die mit * markierten Pflichtfelder ausfüllen!");
+                }
+                else {
+                    alert("Deine Daten wurden erfolgreich übermittlet!");
+                }
+            });
+        </script>
 </body>
 
 </html>
