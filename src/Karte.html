@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<meta charset="UTF-8">
 <html>
 
 <head>
@@ -6,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Karte - Blickpunkte</title>
+    <title>Über uns - Blickpunkte</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -18,16 +19,99 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <style type="text/css">
+        html,
+        body,
+        #basicMap {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
+    <script>
+        function init() {
+            map = new OpenLayers.Map("basicMap");
+            var lat = 52.3839;
+            var lon = 9.7377;
+            var zoom = 13;
+            var mapnik = new OpenLayers.Layer.OSM();
+            var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+            var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            var position = new OpenLayers.LonLat(lon, lat).transform(fromProjection, toProjection);
 
+            map.addLayer(mapnik);
+            map.setCenter(position, zoom);
+
+
+            var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+
+            // Define markers as "features" of the vector layer:
+            var leona = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point( 9.73689 , 52.36774 ).transform(fromProjection, toProjection),
+                {description: '<h1>Leona</h1>' +
+                        '<img src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.heise.de%2Fimagine%2FH2cR2A004rPm4tylHaO8OmwG9RM%2Fgallery%2FRathaus-Hannover.jpg&f=1" height="150" width="225"><br>' +
+                        '"Es gibt viele Dinge, die einen glücklich<br>' +
+                        ' machen finde ich. Auch oft Kleinigkeiten.<br>' +
+                        'Deswegen wollte ich auch mit euch irgendwo<br>' +
+                        'draußen sein. Weil ich das immer schön finde.<br>' +
+                        ' Man sieht Schwäne oder Enten die sich um irgendwas streiten.<br>' +
+                        ' Das sind irgendwie diese Kleinigkeiten die ich schön finde."<br>' + '<a href="interviews/kim.html">Weiter Lesen</a>'},
+                {externalGraphic: 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png', graphicHeight: 51.2, graphicWidth: 51.2}
+            );
+            vectorLayer.addFeatures(leona);
+
+            var xianghu = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point( 9.73830 , 52.37436 ).transform(fromProjection, toProjection),
+                {description: '<h1>Xianghu</h1>' +
+                        '<img src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.hannover.de%2Fcontent%2Fdownload%2F487574%2F10832835%2Ffile%2FKr%C3%B6pcke-Center%2Bund%2BKr%C3%B6pcke-Uhr_c_HMTG.jpg&f=1" height="166.65" width="250"><br>' +
+                        'Wenn ich später auf mein Leben zurückblicke, will ich sagen:<br>' +
+                        '„Ja, du hast bis jetzt alles richtig gemacht und du bereust nichts,<br>' +
+                        'was du bis jetzt gemacht hast“.<br>' + '<a href="">Weiter Lesen</a>'},
+                {externalGraphic: 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png', graphicHeight: 51.2, graphicWidth: 51.2}
+            );
+            vectorLayer.addFeatures(xianghu);
+
+            map.addLayer(vectorLayer);
+
+
+            //Add a selector control to the vectorLayer with popup functions
+            var controls = {
+                selector: new OpenLayers.Control.SelectFeature(vectorLayer, {onSelect: createPopup, onUnselect: destroyPopup }),
+            };
+
+            function createPopup(feature) {
+                feature.popup = new OpenLayers.Popup.FramedCloud("pop",
+                    feature.geometry.getBounds().getCenterLonLat(),
+                    null,
+                    '<div class="markerContent">'+feature.attributes.description+'</div>',
+                    null,
+                    true,
+                    function() { controls['selector'].unselectAll(); }
+                );
+                //feature.popup.closeOnMove = true;
+                map.addPopup(feature.popup);
+            }
+
+            function destroyPopup(feature) {
+                feature.popup.destroy();
+                feature.popup = null;
+            }
+
+            map.addControl(controls['selector']);
+            controls['selector'].activate();
+
+        }
+    </script>
 </head>
 
-<body>
-
+<body onload="init();">
+    <div id="basicMap"></div>
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
             <ul class="list-unstyled components">
-                <li>
+                <li >
                     <a href="./index.html">Startseite</a>
                 </li>
                 <li>
@@ -42,7 +126,6 @@
                 <li>
                     <a id="aboutus" href="./About.html">Über uns</a>
                 </li>
-
             </ul>
 
 
@@ -57,38 +140,7 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Page Content  -->
-        <div id="content">
-            <!-- Page Content  -->
-            <div id="content">
-            </div>
-
-            <!-- jQuery CDN - Slim version (=without AJAX) -->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <!-- Popper.JS -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-            <!-- Bootstrap JS -->
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-            <!-- jQuery Custom Scroller CDN -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-            <script src="./js/bp.js"></script>
-</body>
-
-</html>
-</div>
-
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-<script src="./js/bp.js"></script>
+    </div>
 </body>
 
 </html>
