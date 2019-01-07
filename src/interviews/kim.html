@@ -6,16 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Karte - Blickpunkte</title>
+    <title>Interviews - Blickpunkte</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
+    <style>
+            img.blur {
+              -webkit-filter: blur(50px); /* Safari 6.0 - 9.0 */
+              filter: blur(50px);
+            }
+            </style>
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
         crossorigin="anonymous"></script>
@@ -33,19 +38,18 @@
                 <li>
                     <a href="./index.html">Startseite</a>
                 </li>
-                <li>
-                    <a id="interviews" href="./Interviews.html">Interviews</a>
-                </li>
                 <li class="active">
-                    <a id="map" href="./Karte.html">Karte</a>
+                    <a id="interviews" href="../Interviews.html">Interviews</a>
                 </li>
                 <li>
-                    <a id="apply" href="./Bewerbung.html">Werde Teil</a>
+                    <a id="map" href="../Karte.html">Karte</a>
                 </li>
                 <li>
-                     <a id="aboutus" href="./About.html">Über uns</a>
+                    <a id="apply" href="../Bewerbung.html">Werde Teil</a>
                 </li>
-				
+                <li>
+                     <a id="aboutus" href="../About.html">Über uns</a>
+                </li>
             </ul>
 
 
@@ -55,35 +59,33 @@
                     Seite teilen
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href=https://www.facebook.com/ target="_blank"><i class="fab fa-facebook-square"></i> Facebook</a>
+                    <a class="dropdown-item" href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-square"></i> Facebook</a>
                     <a class="dropdown-item" href="https://www.instagram.com/" target="_blank">Instagram</a>
-                    <a class="dropdown-item" href="https://twitter.com/" target="_blank">Twitter</a>
+                    <a class="dropdown-item" href="https://www.twitter.com/" target="_blank">Twitter</a>
                 </div>
             </div>
         </nav>
 
         <!-- Page Content  -->
         <div id="content">
-                    <!-- Page Content  -->
-                    <div id="content">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="blur d-block w-100" src="../Elements/Daniel.jpg" height="120px" width="100px" alt="First slide">
                     </div>
-            
-                    <!-- jQuery CDN - Slim version (=without AJAX) -->
-                    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-                        crossorigin="anonymous"></script>
-                    <!-- Popper.JS -->
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-                        crossorigin="anonymous"></script>
-                    <!-- Bootstrap JS -->
-                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-                        crossorigin="anonymous"></script>
-                    <!-- jQuery Custom Scroller CDN -->
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-            
-                    <script src="./js/bp.js"></script>
-            </body>
-            
-            </html>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="../Elements/Valeri.jpg" height="120px" width="100px" alt="First slide">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
         </div>
 
         <!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -98,7 +100,13 @@
         <!-- jQuery Custom Scroller CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-        <script src="./js/bp.js"></script>
+        <script src="../js/bp.js"></script>
+        <script>
+            $("img.blur").on("click", function(){
+                console.log("blur")
+                $("img.blur").removeClass("blur");
+            })
+        </script>
 </body>
 
 </html>

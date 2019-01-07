@@ -54,9 +54,9 @@
                     Seite teilen
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="fab fa-facebook-square"></i> Facebook</a>
-                    <a class="dropdown-item" href="#">Instagram</a>
-                    <a class="dropdown-item" href="#">Twitter</a>
+                    <a class="dropdown-item" href=https://www.facebook.com/ target="_blank"><i class="fab fa-facebook-square"></i> Facebook</a>
+                    <a class="dropdown-item" href="https://www.instagram.com/" target="_blank">Instagram</a>
+                    <a class="dropdown-item" href="https://twitter.com/" target="_blank">Twitter</a>
                 </div>
             </div>
         </nav>
@@ -118,12 +118,13 @@
         <script src="./js/application.js"></script>
         <script>
             $("#submit").on("click", function(){
-                console.log(document.getElementById("name").value === "" || document.getElementById("eMail").value === "");
                 if(document.getElementById("name").value === "" || document.getElementById("eMail").value === ""){
                     alert("Bitte die mit * markierten Pflichtfelder ausfüllen!");
+                    return false; 
                 }
                 else {
                     alert("Deine Daten wurden erfolgreich übermittlet!");
+                    window.loacation = "./index.html";
                 }
             });
         </script>
