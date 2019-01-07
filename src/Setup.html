@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Setup</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+        <main role="main" class="container">
+            <h1 class="mt-5">Setup für Blickpunkte</h1>
+            <p>Mit dem Klick auf den unten stehenden Button über die REST-API der CouchDB Beispiel-Interviews in der Datenbank erzeugt. Diese werden später von der Blickpunkte-Webseite abgerufen.</p>
+
+            <p>Stellen Sie sicher, dass CouchDB wie nach den Folien der 6. eingerichtet ist, eine Datenbank mit dem Namen gmci existiert und das die Datenbank über localhost:5984 erreichbar ist. Die Daten sollten anschließend <a href="http://localhost:5984/gmci/_all_docs?include_docs=true">hier</a> abrufbar sein.</p>
+
+            <button type="button" id="initDB" class="btn btn-primary btn-lg">Interviews in Datenbank laden</button>
+        </main>
+
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+
+
+        <script>
+                defaultInterview = {
+                    environmentPic: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg/1200px-Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg",
+                    environmentDescription: "Leona hält sich gerne in der Innenstadt von Hannover auf.",
+                    intervieweePic: "Elements/Beruehrungspunkte_Foto_Leona_1.jpg",
+                    intervieweeName: "Leona",
+                    audioFile: "",
+                    interviewSummary: "Lorem ipsum dolor faubicus foo bar buzz quzz lorem ipsum dolor",
+                    questions: [
+                        {
+                        question: "Was bringt dich morgens aus dem Bett?",
+                        answer: "Naja, der Tag. Der Tag muss starten. Und es bringt bestimmt etwas gutes – hoffe ich. Also manchmal ist es auch schwer aus dem Bett zu kommen. Aber ich habe zum Beispiel einen Wecker, da geht das Licht an und das ist im Winter echt gut. Da ist man morgens nicht mehr ganz so verschlafen. Und dann muss man wohl oder übel die Augen auf machen."
+                        },
+                        {
+                        question: "Du bist also jemand der morgens sagt: Da kommt jetzt ein unglaublich toller Tag und ich springt jetzt aus dem Bett und will sofort loslaufen...",
+                        answer: "Naja...manchmal schon. Wenn man sich auf etwas freut dann schon. Aber an nem Montag, wenn man früh zur Schule muss, ist das natürlich schwierig."
+                        },
+                        {
+                        question: "Bitte vervollständige den folgenden Satz: Früher war ich...heute bin ich...",
+                        answer: "Früher war ich glaube ich etwas aufgedrehter. Und heute bin ich ein Bisschen ruhiger. Mit den Jahren macht man sich ja um viele Sachen immer mehr Gedanken. Und man wird aber auch gelassener. Mir ist irgendwie bewusst geworden, dass ich ich selbst sein soll und dass das gut ist und dass jeder etwas Gutes hat."
+                        },
+                        {
+                        question: "Wenn du jetzt auf die Zukunft schaust, was möchtest du dann für ein Mensch sein?",
+                        answer: "Also weil ich meine Ausbildung zur Goldschmiedin angefangen habe, denke ich viel darüber nach: Was mache ich in der Zukunft? Mache ich mich vielleicht mal selbstständig? Das ist mittlerweile schon so ein Ziel – und ich hoffe, dass ich das irgendwie alles gut geregelt bekomme. Es ist ja nicht leicht selbstständig zu sein, aber da habe ich auf jeden Fall Lust drauf. Und ich habe Lust, vielleicht irgendwann eine große Familie zu haben."
+                        },
+                        {
+                        question: "Wie würde das genau aussehen, wenn du dann selbstständig bist?",
+                        answer: "Naja, du machst halt irgendwann deinen eigenen Laden auf. Ich denke mal, dass ich vielleicht noch Schmuckdesign studieren werde. Und dann kann man ja vielleicht nebenbei in Goldschmieden arbeiten – so ein oder zwei Tage. Aber Onlineverkauf – weiß ich nicht genau. Das ist eigentlich schon die Zukunft. Das machen schon viele Leute. Aber mir macht das Spaß, mit Kunden zu agieren. Also mit Menschen zu reden. Das ist eigentlich das, was mir Freude bereitet. Also wäre ein Laden schon eher etwas für mich."
+                        },
+                        {
+                        question: "Was macht dich glücklich?",
+                        answer: "Menschen. Also mit Anderen, mit Freunden zusammen zu sein. Zu lachen. Oder auch Gutes zu tun. Mit der Familie zusammen zu sein. Oder in die Natur zu gehen. Es gibt viele Dinge, die einen glücklich machen finde ich. Auch oft Kleinigkeiten. Deswegen wollte ich auch mit euch irgendwo draußen sein. Weil ich das immer schön finde. Man sieht Schwäne oder Enten die sich um irgendwas streiten. Das sind irgendwie diese Kleinigkeiten die ich schön finde."
+                        },
+                        {
+                        question: "Wann wirst du traurig?",
+                        answer: "Also wenn Menschen anderen Menschen oder Tieren Leid zufügen. Das macht mich sehr traurig. Oder wenn manche Menschen ungerechtfertigt nicht nett zu einem sind. Ich arbeite zum Beispiel nebenbei noch in einem Café und da kommen manchmal Menschen rein, die sind von vornherein fies zu dir. Oder behandeln dich einfach nicht nett. Und das finde ich irgendwie immer traurig. Ich versteh das nicht. Ich finde das nicht schwer einfach zu lächeln oder kurz etwas Nettes zu sagen. Aber dann denke ich mir auch, dass die Menschen vielleicht schon genug gestraft sind. Die haben dann wahrscheinlich auch kein glückliches Leben, wenn sie schon so drauf sind."
+                        },
+                        {
+                        "question:": "Gibt es da einen Moment, der dir besonders im Kopf geblieben ist?",
+                        answer: "Also das hat mich jetzt nicht so richtig traurig gemacht, aber so ein Bisschen sauer: Als ich im Café gearbeitet habe...das ist so ein Typ, der kommt immer rein und geht einfach aufs Klo, ohne irgendwie mal „Hallo“ zu sagen. Oder zu lächeln oder zu fragen „Kann ich mal das Klo benutzen“? Und dann habe ich ihm mal gesagt „Es wäre nett, wenn Sie das nächste Mal fragen“. Und dann hat der mich halt voll „angepammpt“. Das habe ich einfach nicht verstanden. Warum kann man nicht einfach fragen und kurz „Hallo“ sagen. Das ist ja nicht schwer. Und so etwas versteh ich dann nicht."
+                        },
+                        {
+                        question: "Gab es denn einen Wendepunkt in deinem Leben?",
+                        answer: "Also ich war mit 16 in Neuseeland und dann bin ich wiedergekommen und war in einer neuen Klasse – viele neue Leute. Und da hatte ich dann nicht viele von meinen alten Freunden und war vielleicht ein Bisschen unsicher. Und da hat man sich auch ein Bisschen verändert. Aber das war glaube ich auch wegen dem Auslandsjahr. Da passiert ja auch viel mit einem wenn man ein Jahr weg ist von zu Hause. Da wird man dann vielleicht ein Bisschen nachdenklicher. Aber das war kein richtiger Punkt wo sich großartig etwas geändert hat. Das ist ein schleichender Prozess. Ich denke mal, das ist auch irgendwo normal, dass die Menschen ein Bisschen ruhiger werden und sich auf sich selbst besinnen."
+                        },
+                        {
+                        question: "Wenn du eine Sache ändern könntest, was wäre das?",
+                        answer: "Wenn ich eine Sache ändern könnte, dann würde ich die massenhafte Tierhaltung verbieten. Aber das ist nicht so leicht."
+                        },
+                        {
+                        question: "Was ist dein Talent? Was macht dich aus?",
+                        answer: "Ich denke mal, dass ich gut auf Menschen zugehen kann. Und dass ich positiv an Dinge herangehe."
+                        },
+                        {
+                        question: "Was bringt dich zum Lachen?",
+                        answer: "Menschen. Mit Menschen zu reden. Einfach irgendwie positive Energie auszustrahlen, aufzunehmen."
+                        },
+                        {
+                        question: "Was steht ganz oben auf deiner „Bucket-List“?",
+                        answer: "Ich hätte gerne so nen Raum, wo ich mit Farbe um mich schmeißen kann. Auf so etwas habe ich manchmal total Lust. So nen Eimer mit Farbe zu haben und das dann überall an die Wand zu klatschen...und mit den Händen. Manchmal habe ich da voll Lust drauf kreativ auszurasten. Aber leider habe ich so einen Raum nicht... ."
+                        },
+                        {
+                        question: "Möchtest du noch etwas hinzufügen?",
+                        answer: "Menschen seid offen zu anderen Menschen! Seid nicht voreingenommen."
+                        }
+                    ]
+                };
+
+                interviewees = ["Briana", "Paula", "Mira", "Hannah", "Leona"];
+
+
+                $("#initDB").on("click", function() {
+                    interviewees.forEach(name => {
+                        newInterview = defaultInterview;
+                        newInterview['intervieweeName'] = name;
+
+                        axios.post('http://127.0.0.1:5984/gmci', newInterview)
+                        .then(response => {
+                            console.log("Interview für " + newInterview['intervieweeName'] + " erfolgreich hinzugefügt");
+                        })
+                        .catch(error => {
+                            alert("Es ist ein Fehler beim erstellen eines Interviews aufgetreten (s. Konsole).");
+                            console.log(error);
+                        });
+                    });
+                });
+            </script>
+</body>
+
+</html>
