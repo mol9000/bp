@@ -1,4 +1,5 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 body {
     font-family: 'Poppins', sans-serif;
 }
@@ -10,8 +11,6 @@ p {
     line-height: 1.7em;
     color: #999;
 }
-
-
 
 a,
 a:hover,
@@ -33,11 +32,9 @@ a:focus {
     border: none;
 }
 
-
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-
 .wrapper {
     display: flex;
     width: 100%;
@@ -58,7 +55,6 @@ a:focus {
 #sidebar.active {
     margin-left: -250px;
 }
-
 
 #sidebar ul p {
     color: #fff;
@@ -82,14 +78,11 @@ a[aria-expanded="true"] {
     background: #6d7fcc;
 }
 
-
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #6d7fcc;
 }
-
-
 
 a.article,
 a.article:hover {
@@ -107,11 +100,9 @@ a.article:hover {
     margin: 10px;
 }
 
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-
 #content {
     width: calc(100% - 250px);
     padding: 40px;
@@ -124,23 +115,24 @@ a.article:hover {
 
 #content.active {
     width: 100%;
-
 }
 
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
     }
+
     #sidebar.active {
         margin-left: 0;
     }
+
     #content {
         width: 100%;
     }
+
     #content.active {
         width: calc(100% - 250px);
     }

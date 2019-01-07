@@ -9,18 +9,15 @@
     <title>Bewerbung - Blickpunkte</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
     <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-        crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
 </head>
 
@@ -30,7 +27,7 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <ul class="list-unstyled components">
-                 <li>
+                <li>
                     <a href="./index.html">Startseite</a>
                 </li>
                 <li>
@@ -43,14 +40,13 @@
                     <a id="apply" href="./Bewerbung.html">Werde Teil</a>
                 </li>
                 <li>
-                     <a id="aboutus" href="./About.html">Über uns</a>
+                    <a id="aboutus" href="./About.html">Über uns</a>
                 </li>
             </ul>
 
 
             <div class="btn-group dropup fixed-bottom">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false" id="share-project">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="share-project">
                     Seite teilen
                 </button>
                 <div class="dropdown-menu">
@@ -70,10 +66,10 @@
                 </button>
 
                 <div class="mx-auto">
-                   <h3>Werde ein Teil von Hannover</h3>
-                   <div>Würdest du gerne bei Blickpunkte *kann ich aus dem foto nicht mehr ablesen*</div>
+                    <h3>Werde ein Teil von Hannover</h3>
+                    <div>Würdest du gerne bei Blickpunkte *kann ich aus dem foto nicht mehr ablesen*</div>
                 </div>
-                
+
             </nav>
 
             <form>
@@ -92,16 +88,16 @@
                 <div class="form-group">
                     <label for="motivation">Mich motiviert...</label>
                     <textarea rows="3" class="form-control" id="motivation"></textarea>
-                 </div>
-                 <div class="form-group">
+                </div>
+                <div class="form-group">
                     <label for="palce">Mein Lieblingsort in Hannover ist, ..., weil...</label>
-                    <textarea  rows="3" class="form-control" id="place" placeholder=""></textarea>
+                    <textarea rows="3" class="form-control" id="place" placeholder=""></textarea>
                 </div>
                 <div class="form-group">
                     <label for="lastWords">Ich wollte noch sagen, dass...</label>
                     <input type="text" class="form-control" id="lastWords">
                 </div>
-                <button type="submit" id="submit" class="btn btn-primary" >Senden</button>
+                <button type="submit" id="submit" class="btn btn-primary">Senden</button>
             </form>
         </div>
 
@@ -113,16 +109,15 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
         <!-- jQuery Custom Scroller CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-        
+
         <script src="./js/bp.js"></script>
         <script src="./js/application.js"></script>
         <script>
-            $("#submit").on("click", function(){
-                if(document.getElementById("name").value === "" || document.getElementById("eMail").value === ""){
+            $("#submit").on("click", function() {
+                if (document.getElementById("name").value === "" || document.getElementById("eMail").value === "") {
                     alert("Bitte die mit * markierten Pflichtfelder ausfüllen!");
-                    return false; 
-                }
-                else {
+                    return false;
+                } else {
                     alert("Deine Daten wurden erfolgreich übermittlet!");
                     window.loacation = "./index.html";
                 }
