@@ -59,7 +59,26 @@
 
         <!-- Page Content  -->
         <div id="content">
+            <div id="interviews">
+                <div class="row mb-2" data-bind = "foreach: interviews ">
+                        <div class="col-md-6" >
+                            <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                              <div class="card-body d-flex flex-column align-items-start">
+                                <h3 class="mb-0">
+                                  <a class="text-dark" data-bind="attr: {href: 'Interview.html?id=' + $data.id}">Interview mit <span data-bind="text: $data.doc.intervieweeName"></span></a>
+                                </h3>
+                                <p class="card-text mb-auto" data-bind="text: $data.doc.interviewSummary"></p>
+                                <a data-bind="attr: {href: 'Interview.html?id=' + $data.id}" class="read-more">Weiterlesen</a>
+                              </div>
+                              <image data-bind="attr: {src:  $data.doc.intervieweePic}" class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="200" height="250"></image>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
         </div>
+
+
 
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -71,6 +90,28 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
         <script src="./js/bp.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+        <script src = "https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"
+         type = "text/javascript"></script>
+        <script>
+            function AppViewModel(interviews) {
+                this.interviews = (interviews);
+            };
+
+            axios.get('http://localhost:5984/gmci/_all_docs?include_docs=true')
+            .then(function (response) {
+                // handle success
+                var vm = new AppViewModel(response.data.rows);
+                ko.applyBindings(vm);
+                console.log(response.data.total_rows);
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert("Interviews konnten nicht von Datenbank geladen werden.");
+            });
+        </script>
 </body>
 
 </html>
