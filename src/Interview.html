@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Interviews - Blickpunkte</title>
+    <title<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Interview - Blickpunkte</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -57,6 +65,10 @@
             </div>
         </nav>
 
+
+
+
+
         <!-- Page Content  -->
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -65,27 +77,24 @@
                 </button>
 
                 <div class="mx-auto">
-                    <h3>Interviews</h3>
+                    <h3 data-bind="text: 'Interview mit ' + $data.interviews.intervieweeName"></h3>
                 </div>
             </nav>
 
-            <div id="interviews">
-                <div class="row mb-2" data-bind = "foreach: interviews ">
-                        <div class="col-md-6" >
-                            <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                              <div class="card-body d-flex flex-column align-items-start">
-                                <h3 class="mb-0">
-                                  <a class="text-dark" data-bind="attr: {href: 'Interview.html?id=' + $data.id}">Interview mit <span data-bind="text: $data.doc.intervieweeName"></span></a>
-                                </h3>
-                                <p class="card-text mb-auto" data-bind="text: $data.doc.interviewSummary"></p>
-                                <a data-bind="attr: {href: 'Interview.html?id=' + $data.id}" class="read-more">Weiterlesen</a>
-                              </div>
-                              <image data-bind="attr: {src:  $data.doc.intervieweePic}" class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="200" height="250"></image>
-                            </div>
-                        </div>
-                </div>
-            </div>
+            <center class="spacer">
+                    <img data-bind="attr: {src:  $data.interviews.environmentPic}"  width="auto" height="500px">
+                    <p data-bind="text: $data.interviews.environmentDescription"></p>
+            </center>
 
+
+            <span data-bind = "foreach: interviews.questions" class="question-section">
+                <b data-bind="text: $data.question"></b>
+                <p data-bind="text: $data.answer"></p>
+            </span>
+
+            <center>
+                <img class="blur d-block spacer" data-bind="attr: {src:  $data.interviews.intervieweePic, alt: $data.interviews.intervieweeName}"  width="250" >
+            </center>
         </div>
 
 
@@ -110,16 +119,29 @@
                 this.interviews = (interviews);
             };
 
-            axios.get('http://localhost:5984/gmci/_all_docs?include_docs=true')
+            var getIDFromURL = function() {
+                var href = window.location.href;
+                var reg = new RegExp( '[?&]id=([^&#]*)', 'i' );
+                var string = reg.exec(href);
+                return string ? string[1] : null;
+            };
+
+            axios.get('http://localhost:5984/gmci/'+ getIDFromURL())
             .then(function (response) {
                 // handle success
-                var vm = new AppViewModel(response.data.rows);
+                var vm = new AppViewModel(response.data);
                 ko.applyBindings(vm);
-                console.log(response.data.total_rows);
+                console.log(response.data);
             })
             .catch(function (error) {
-                console.log(error);
+                    console.log(error);
             });
+
+            // blur image of interviewee and unblur it on click
+            $("img.blur").on("click", function() {
+                console.log("blur")
+                $("img.blur").removeClass("blur");
+            })
         </script>
 </body>
 

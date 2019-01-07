@@ -36,6 +36,22 @@ a:focus {
     color: blue;
 }
 
+.question-section {
+    margin-top: 20px;
+    width: width: calc(100% - 250px);;
+}
+
+
+img.blur {
+    -webkit-filter: blur(50px); /* Safari 6.0 - 9.0 */
+    filter: blur(25px);
+}
+
+.spacer {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
