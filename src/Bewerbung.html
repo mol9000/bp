@@ -118,7 +118,11 @@
                     alert("Bitte die mit * markierten Pflichtfelder ausfüllen!");
                     return false;
                 } else {
-                    alert("Deine Daten wurden erfolgreich übermittlet!");
+                    if(confirm("Möchtest du den Vorgang abschließen?")){
+                        submit();
+                    }else{
+                        return false;
+                    };
                     window.loacation = "./index.html";
                 }
             });
