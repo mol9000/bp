@@ -95,7 +95,28 @@
             <center>
                 <img class="blur d-block spacer" data-bind="attr: {src:  $data.interviews.intervieweePic, alt: $data.interviews.intervieweeName}"  width="250" >
             </center>
-        </div>
+
+
+            <h4>Orte, an denen ich mich gerne aufhalte:</h4>
+
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner" data-bind = "foreach: interviews.galleryPics">
+                        <div class="carousel-item" data-bind=" css: {'active': $index()==0}">
+                            <img class="d-block w-100" data-bind="attr: {src: $data}" width="250px" height="500px">
+                         </div>
+
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
+
 
 
 
@@ -142,6 +163,8 @@
                 console.log("blur")
                 $("img.blur").removeClass("blur");
             })
+
+            // $(".carousel-item:first").addClass("active");
         </script>
 </body>
 
