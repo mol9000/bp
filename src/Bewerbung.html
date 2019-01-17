@@ -18,7 +18,44 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <style>
+        dialog {
+            display: none;
+            position: relative;
+            z-index:1002;
 
+        }
+
+        dialog[open="open"] {
+            display: block;
+        }
+
+        @media (min-width: 30em) {
+            dialog {
+                width: 200em;
+            }
+        }
+        dialog::backdrop, #backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        dialog #close-dialog {
+	       position: absolute;
+	       right: 0;
+	       top: 0;
+	       height: 2em;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+	       font-weight: bold;
+	       font-size: 1.5em;
+	       border-radius: 0 .5em .5em;
+        }
+    </style>
 </head>
 
 <body>
@@ -102,6 +139,12 @@
             </form>
         </div>
 
+        <dialog role="dialog" aria-labelledby="dialog-heading">
+            <button id="close-dialog">Schließen</button>
+            <h2 id="dialog-heading">Info</h2>
+            <p> Vielen DAnk für ihre Bewerbung. Ihr Daten werden jetzt von uns Überprüft und sie bekommen dann eine eMail mit der bestätigung.</p>
+        </dialog>
+
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <!-- Popper.JS -->
@@ -119,14 +162,45 @@
                     alert("Bitte die mit * markierten Pflichtfelder ausfüllen!");
                     return false;
                 } else {
-                    if(confirm("Möchtest du den Vorgang abschließen?")){
-                        submit();
-                    }else{
+                    if (confirm("Möchtest du den Vorgang abschließen?")) {
+                        toggleDialog();
+                        //submit();
+                    } else {
                         return false;
                     };
                     window.loacation = "./index.html";
                 }
             });
+
+            function toggleDialog() {
+                var dialog = document.querySelector('dialog'),
+                    closebutton = document.getElementById('close-dialog'),
+                    pagebackground = document.querySelector('body');
+
+                if (!dialog.hasAttribute('open')) {
+                    // show the dialog
+                    dialog.setAttribute('open', 'open');
+                    // after displaying the dialog, focus the closebutton inside it
+                    closebutton.focus();
+                    closebutton.addEventListener('click', toggleDialog);
+                    // EventListener für ESC-Taste
+                    document.addEventListener('keydown', function(event) {
+                        if (event.keyCode == 27) {
+                            toggleDialog();
+                        }
+                    }, true);
+                    // only hide the background *after* you've moved focus out of the content that will be "hidden"
+                    var div = document.createElement('div');
+                    div.id = 'backdrop';
+                    document.body.appendChild(div);
+                } else {
+                    dialog.removeAttribute('open');
+                    var div = document.querySelector('#backdrop');
+                    div.parentNode.removeChild(div);
+                    //lastFocus.focus();
+                    window.location = "index.html";
+                }
+            }
         </script>
 </body>
 

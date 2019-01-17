@@ -161,9 +161,14 @@
             });
 
             // blur image of interviewee and unblur it on click
-            $("img.blur").on("click", function() {
-                console.log("blur")
+            $("img.blur").on("mouseover", function() {
+                console.log("unblur")
                 $("img.blur").removeClass("blur");
+            })
+
+            $("img.blur").on("mouseout", function() {
+                console.log("blur")
+                $("img.blur").addClass("blur");
             })
 
             // $(".carousel-item:first").addClass("active");
