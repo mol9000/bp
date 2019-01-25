@@ -4,6 +4,11 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+#homepage {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Kroepcke_square_Hanover_Germany_a.jpg/1920px-Kroepcke_square_Hanover_Germany_a.jpg");
+    background-size: cover;
+}
+
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;
