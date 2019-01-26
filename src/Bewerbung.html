@@ -19,6 +19,13 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     <style>
+
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+            opacity: 0.6;
+        }
+
         dialog {
             display: none;
             position: relative;
@@ -28,11 +35,12 @@
 
         dialog[open="open"] {
             display: block;
+            margin-top: 17%;
         }
 
         @media (min-width: 30em) {
             dialog {
-                width: 200em;
+                width: 400px;
             }
         }
         dialog::backdrop, #backdrop {
@@ -49,11 +57,12 @@
 	       top: 0;
 	       height: 2em;
             cursor: pointer;
-            background-color: red;
+            background-color: grey;
             color: white;
 	       font-weight: bold;
-	       font-size: 1.5em;
-	       border-radius: 0 .5em .5em;
+	       font-size: 1em;
+           margin-top: 43%;
+           margin-right: 10%;
         }
     </style>
 </head>
@@ -65,19 +74,19 @@
         <nav id="sidebar">
             <ul class="list-unstyled components">
                 <li>
-                    <a href="./index.html">Startseite</a>
+                    <a id="link" href="./index.html">Startseite</a>
                 </li>
                 <li>
-                    <a id="interviews" href="./Interviews.html">Interviews</a>
+                    <a  id="interviews" href="./Interviews.html">Interviews</a>
                 </li>
                 <li>
-                    <a id="map" href="./Karte.html">Karte</a>
+                    <a  id="map" href="./Karte.html">Karte</a>
                 </li>
                 <li class="active">
-                    <a id="apply" href="./Bewerbung.html">Werde Teil</a>
+                    <a  id="apply" href="./Bewerbung.html">Werde Teil</a>
                 </li>
                 <li>
-                    <a id="aboutus" href="./About.html">Über uns</a>
+                    <a  id="aboutus" href="./About.html">Über uns</a>
                 </li>
             </ul>
 
@@ -119,30 +128,30 @@
                     <input type="email" class="form-control" id="eMail" aria-describedby="emailHelp" placeholder="Gib hier deine E-Mail-Adresse ein">
                 </div>
                 <div class="form-group">
-                    <label for="interesting">Das interessante an mir ist...</label>
+                    <label for="interesting">3. Das interessante an mir ist...</label>
                     <input type="text" class="form-control" id="interesting" placeholder="Ein Wort/kurzer Satz, was dich interessant macht">
                 </div>
                 <div class="form-group">
-                    <label for="motivation">Mich motiviert...</label>
+                    <label for="motivation">4. Mich motiviert...</label>
                     <textarea rows="3" class="form-control" id="motivation"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="palce">Mein Lieblingsort in Hannover ist, ..., weil...</label>
+                    <label for="palce">5. Mein Lieblingsort in Hannover ist, ..., weil...</label>
                     <textarea rows="3" class="form-control" id="place" placeholder=""></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="lastWords">Ich wollte noch sagen, dass...</label>
+                    <label for="lastWords">6. Ich wollte noch sagen, dass...</label>
                     <input type="text" class="form-control" id="lastWords">
                 </div>
                 *Pflichtfeld <br>
-                <button type="submit" id="submit" class="btn btn-primary">Senden</button>
+                <button type="" id="submit" class="btn btn-primary">Senden</button>
             </form>
         </div>
 
         <dialog role="dialog" aria-labelledby="dialog-heading">
             <button id="close-dialog">Schließen</button>
             <h2 id="dialog-heading">Info</h2>
-            <p> Vielen DAnk für ihre Bewerbung. Ihr Daten werden jetzt von uns Überprüft und sie bekommen dann eine eMail mit der bestätigung.</p>
+            <p id="info_field"> </p>
         </dialog>
 
         <!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -159,20 +168,17 @@
         <script>
             $("#submit").on("click", function() {
                 if (document.getElementById("name").value === "" || document.getElementById("eMail").value === "") {
-                    alert("Bitte die mit * markierten Pflichtfelder ausfüllen!");
+                    toggleDialog("error");
                     return false;
                 } else {
-                    if (confirm("Möchtest du den Vorgang abschließen?")) {
-                        toggleDialog();
-                        //submit();
-                    } else {
-                        return false;
-                    };
-                    window.loacation = "./index.html";
+
+                    toggleDialog("email");
+
+
                 }
             });
 
-            function toggleDialog() {
+            function toggleDialog(code) {
                 var dialog = document.querySelector('dialog'),
                     closebutton = document.getElementById('close-dialog'),
                     pagebackground = document.querySelector('body');
@@ -183,22 +189,36 @@
                     // after displaying the dialog, focus the closebutton inside it
                     closebutton.focus();
                     closebutton.addEventListener('click', toggleDialog);
+
                     // EventListener für ESC-Taste
                     document.addEventListener('keydown', function(event) {
                         if (event.keyCode == 27) {
-                            toggleDialog();
+                            if (code == "email") {
+                                toggleDialog("email");
+                            } else {
+                                toggleDialog();
+                            }
                         }
                     }, true);
                     // only hide the background *after* you've moved focus out of the content that will be "hidden"
                     var div = document.createElement('div');
                     div.id = 'backdrop';
                     document.body.appendChild(div);
+                    if (code == "email") {
+                        document.getElementById("info_field").innerHTML = "Vielen Dank für ihre Bewerbung. Ihr Daten werden jetzt von uns Überprüft und sie bekommen dann eine eMail mit der bestätigung."
+                        document.getElementById("close-dialog").style.marginTop = "43%";
+                    } else if (code == "error") {
+                        document.getElementById("info_field").innerHTML = "Bitte die mit * markierten Pflichtfelder ausfüllen!"
+                        document.getElementById("close-dialog").style.marginTop = "25%";
+                    }
                 } else {
                     dialog.removeAttribute('open');
                     var div = document.querySelector('#backdrop');
                     div.parentNode.removeChild(div);
                     //lastFocus.focus();
-                    window.location = "index.html";
+                    if (code == "email") {
+                        window.location = "index.html";
+                    }
                 }
             }
         </script>
