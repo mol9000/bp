@@ -24,16 +24,16 @@
         </main>
 
         <!-- jQuery CDN - Slim version (=without AJAX) -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
         <!-- Popper.JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
         <!-- jQuery Custom Scroller CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-
 
 
         <script>
@@ -46,7 +46,7 @@
                         "https://upload.wikimedia.org/wikipedia/commons/c/c4/Herrenhäuser_gärten_2.jpg"
                     ],
                     intervieweePic: "Elements/Beruehrungspunkte_Foto_Leona_1.jpg",
-                    startpic: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg/1200px-Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg"
+                    startpic: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg/1200px-Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg",
                     intervieweeName: "Leona",
                     audioFile: "",
                     geometryX: 9.73830,
@@ -120,13 +120,15 @@
                         newInterview = defaultInterview;
                         newInterview['intervieweeName'] = name;
 
-                        axios.post('http://127.0.0.1:5984/gmci', newInterview)
-                        .then(response => {
-                            console.log("Interview für " + newInterview['intervieweeName'] + " erfolgreich hinzugefügt");
-                        })
-                        .catch(error => {
-                            alert("Es ist ein Fehler beim erstellen eines Interviews aufgetreten (s. Konsole).");
-                            console.log(error);
+                        $.ajax({
+                            type: "POST",
+                            url: "http://127.0.0.1:5984/gmci",
+                            data: JSON.stringify(newInterview),
+                            async: false,
+                            contentType: "application/json",
+                            error: function(e) {
+                                console.log(e);
+                            }
                         });
                     });
                 });
