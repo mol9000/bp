@@ -58,6 +58,11 @@ img.blur {
     margin-bottom: 60px;
 }
 
+#welcome-screen {
+    padding: 70px;
+    background:rgba(255,255,255,0.7);
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -166,5 +171,9 @@ a.article:hover {
     #sidebarCollapse {
         display: block;
         background: #0D0E8B;
+    }
+
+    #welcome-screen {
+        padding: 20px;
     }
 }
