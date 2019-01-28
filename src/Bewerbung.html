@@ -125,11 +125,11 @@
             <form id="form">
                 <div class="form-group">
                     <label for="name" title="Pflichtfeld">1. Mein Vorname*</label>
-                    <input type="text" class="form-control" id="name" placeholder="Gib hier deinen Vornamen ein">
+                    <input type="text" class="form-control requiredField" required="required" id="name" placeholder="Gib hier deinen Vornamen ein">
                 </div>
                 <div class="form-group">
                     <label for="eMail" title="Pflichtfeld">2. Meine E-Mail-Adresse*</label>
-                    <input type="email" class="form-control" id="eMail" aria-describedby="emailHelp" placeholder="Gib hier deine E-Mail-Adresse ein">
+                    <input type="email" class="form-control requiredField " required="required" id="eMail" aria-describedby="emailHelp" placeholder="Gib hier deine E-Mail-Adresse ein">
                 </div>
                 <div class="form-group">
                     <label for="interesting">3. Das interessante an mir ist...</label>
@@ -169,18 +169,9 @@
             
             
             $('#submit').on('click', function(){
-                $('.alert').remove();
-                if(document.getElementById('eMail').value == ""){
-                    alertFailure("Bitte gib eine gültige E-Mail-Adresse an!");
-                    return false;
-                } else if(document.getElementById('name').value == ""){
-                    alertFailure("Bitte gib deinen Vornamen an!");
-                    return false;
-                } else {
-                    alertWarning();
-                    document.getElementById("form").style.display="none";
-                    return false;
-                }
+                alertWarning();
+                document.getElementById("form").style.display="none";
+                return false;
             });
 
             $('#close').on('click', function(){
@@ -190,27 +181,18 @@
             function alertSuccess(){
                 var alert = $('<div class="alert" id="alert" role="alert"></div>');
                 $(alert).addClass('alert-success show fade alert-dismissible');
-                $(alert).append('<p>Deine Daten wurden erfolgreich übermittelt</p>');
-                $(alert).append('<button type="" id="quit" class="btn btn-danger"><a href="index.html"</a>OK</button>').on('click', function(){
+                $(alert).append('<p class="text-dark">Deine Daten wurden erfolgreich übermittelt</p>');
+                $(alert).append('<button type="" id="quit" class="btn btn-primary"><a href="index.html"</a>OK</button>').on('click', function(){
                     window.location = index.html;
                 });
                 $(alert).insertAfter('#top_nav');
                 $('.alert').alert('alert');
             }
 
-            function alertFailure(text){
-                var alert = $('<div class="alert" id="alert" role="alert"></div>');
-                $(alert).addClass('alert-danger show fade alert-dismissible');
-                $(alert).append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-                $(alert).append('<p>'+text+'</p>');
-                $(alert).insertAfter('#top_nav');
-                return false;
-            }
-
             function alertWarning(){
                 var alert = $('<div class="alert" id="alert" role="alert"></div>');
                 $(alert).addClass('alert-warning show fade alert-dismissible');
-                $(alert).append('<p>Bist du sicher, dass du dich bei Blickpunkte bewerben möchtest?</p>');
+                $(alert).append('<p class="text-dark">Bist du sicher, dass du dich bei Blickpunkte bewerben möchtest?</p>');
                 $(alert).append('<hr>');
                 $(alert).append('<button type="" id="send" class="btn btn-success">Ja</button>').on('click', '#send', function(){
                     $(".alert").remove();
@@ -223,7 +205,6 @@
                     $('.alert').removeClass('alert-warning');
                 });
                 $(alert).insertAfter('#top_nav');
-                console.log(alert);
                 $('.alert').alert('alert');
             }
         </script>
