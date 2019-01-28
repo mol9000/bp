@@ -29,6 +29,7 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
         function init() {
             map = new OpenLayers.Map("basicMap");
@@ -45,6 +46,26 @@
 
 
             var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+
+
+            axios.get('http://localhost:5984/gmci/_all_docs?include_docs=true')
+            .then(function(response) {
+                var numOfInterviews = response.data.rows; // Enthält alle Interviewobjekte. Einfach mit schleife durchlaufen
+
+                // Zugriff auf Attribute, hier die Koordinaten als Beispiel
+                // response.data.rows[ INDEX ].geometryX
+                // response.data.rows[ INDEX ].geometryY
+
+                console.log(response.data.total_rows + " Interviews wurden geladen");
+
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+
+
+
 
             // Define markers as "features" of the vector layer:
             var leona = new OpenLayers.Feature.Vector(
