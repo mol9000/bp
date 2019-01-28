@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Über uns - Blickpunkte</title>
+    <title>Karte - Blickpunkte</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -26,6 +26,10 @@
             width: clac(100vw - 250px);
             height: 100vh;
             margin-left: 125px;
+        }
+
+        .markerContent {
+            max-width: 300px;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
@@ -50,48 +54,28 @@
 
             axios.get('http://localhost:5984/gmci/_all_docs?include_docs=true')
             .then(function(response) {
-                var numOfInterviews = response.data.rows; // Enthält alle Interviewobjekte. Einfach mit schleife durchlaufen
+                var numOfInterviews = response.data.total_rows;
 
-                // Zugriff auf Attribute, hier die Koordinaten als Beispiel
-                // response.data.rows[ INDEX ].geometryX
-                // response.data.rows[ INDEX ].geometryY
-
-                console.log(response.data.total_rows + " Interviews wurden geladen");
-
+                for(var i=0; i<numOfInterviews; i++) {
+                    addPin(response.data.rows[i].doc,
+                           response.data.rows[i].id);
+                }
             })
             .catch(function(error) {
                 console.log(error);
             });
 
 
-
-
-
-            // Define markers as "features" of the vector layer:
-            var leona = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.Point( 9.73830 , 52.37436 ).transform(fromProjection, toProjection),
-                {description: '<h1>Leona</h1>' +
-                        '<img src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.hannover.de%2Fcontent%2Fdownload%2F487574%2F10832835%2Ffile%2FKr%C3%B6pcke-Center%2Bund%2BKr%C3%B6pcke-Uhr_c_HMTG.jpg&f=1" height="150" width="225"><br>' +
-                        '"Es gibt viele Dinge, die einen glücklich<br>' +
-                        ' machen finde ich. Auch oft Kleinigkeiten.<br>' +
-                        'Deswegen wollte ich auch mit euch irgendwo<br>' +
-                        'draußen sein. Weil ich das immer schön finde.<br>' +
-                        ' Man sieht Schwäne oder Enten die sich um irgendwas streiten.<br>' +
-                        ' Das sind irgendwie diese Kleinigkeiten die ich schön finde."<br>' + '<a href="Interview.html?id=5cf3e4bc4013ff8e84aa14adc7000be1"><u>Weiterlesen</u></a>'},
-                {externalGraphic: 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png', graphicHeight: 51.2, graphicWidth: 51.2}
-            );
-            vectorLayer.addFeatures(leona);
-
-            var xianghu = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.Point( 9.73689 , 52.36774 ).transform(fromProjection, toProjection),
-                {description: '<h1>Xianghu</h1>' +
-                        '<img src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.heise.de%2Fimagine%2FH2cR2A004rPm4tylHaO8OmwG9RM%2Fgallery%2FRathaus-Hannover.jpg&f=1" height="166.65" width="250"><br>' +
-                        'Wenn ich später auf mein Leben zurückblicke, will ich sagen:<br>' +
-                        '„Ja, du hast bis jetzt alles richtig gemacht und du bereust nichts,<br>' +
-                        'was du bis jetzt gemacht hast“.<br>' + '<a href="Interview.html?id=5cf3e4bc4013ff8e84aa14adc70014e4" class="read-more"><u>Weiterlesen</u></a>'},
-                {externalGraphic: 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png', graphicHeight: 51.2, graphicWidth: 51.2}
-            );
-            vectorLayer.addFeatures(xianghu);
+            function addPin(interview, interviewID) {
+                console.log('"foo"' + interviewID + '"bra"' );
+                var pin = new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.Point( interview.geometryX , interview.geometryY ).transform(fromProjection, toProjection),
+                    {description: '<h1>' + interview.intervieweeName + '</h1>' +
+                            '<img src="' + interview.environmentPic + '" height="150" width="225"><br>' + interview.interviewSummary +
+                             '<br> <a href="Interview.html?id=' + interviewID + '" class="read-more"><u>Weiterlesen</u></a>'},
+                    {externalGraphic: 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png', graphicHeight: 51.2, graphicWidth: 51.2});
+                vectorLayer.addFeatures(pin);
+            };
 
             map.addLayer(vectorLayer);
 
