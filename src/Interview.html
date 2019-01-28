@@ -27,6 +27,39 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
+    <style>
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.container img {
+  width: 100%;
+  height: auto;
+}
+
+.container .btnen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.container .btnen:hover {
+  background-color: black;
+}
+</style>
+
 </head>
 
 <body>
@@ -95,7 +128,10 @@
             <h4>Ein Bild von mir:</h4>
 
             <center>
-                <img class="blur d-block spacer" data-bind="attr: {src:  $data.interviews.intervieweePic, alt: $data.interviews.intervieweeName}"  width="250" >
+                <div class="container">
+                    <img class="blur d-block spacer" data-bind="attr: {src:  $data.interviews.intervieweePic, alt: $data.interviews.intervieweeName}"  width="250" >
+                    <button class="btnen">Ansehen</button>
+                </div>
             </center>
 
 
@@ -161,15 +197,16 @@
             });
 
             // blur image of interviewee and unblur it on click
-            $("img.blur").on("mouseover", function() {
+            $("button.btnen").on("click", function() {
                 console.log("unblur")
                 $("img.blur").removeClass("blur");
+                $(".btnen").remove();
             })
 
-            $("img.blur").on("mouseout", function() {
-                console.log("blur")
-                $("img.blur").addClass("blur");
-            })
+            // $("img.blur").on("mouseout", function() {
+            //     console.log("blur")
+            //     $("img.blur").addClass("blur");
+            // })
 
             // $(".carousel-item:first").addClass("active");
         </script>
