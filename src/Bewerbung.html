@@ -18,55 +18,6 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-    <style>
-        .alert {
-            z-index : 1000000000000000000000000;
-        }
-        .disabled {
-            pointer-events: none;
-            cursor: default;
-            opacity: 0.6;
-        }
-
-        dialog {
-            display: none;
-            position: relative;
-            z-index:1002;
-
-        }
-
-        dialog[open="open"] {
-            display: block;
-            margin-top: 17%;
-        }
-
-        @media (min-width: 30em) {
-            dialog {
-                width: 400px;
-            }
-        }
-        dialog::backdrop, #backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        dialog #close-dialog {
-	       position: absolute;
-	       right: 0;
-	       top: 0;
-	       height: 2em;
-            cursor: pointer;
-            background-color: grey;
-            color: white;
-	       font-weight: bold;
-	       font-size: 1em;
-           margin-top: 43%;
-           margin-right: 10%;
-        }
-    </style>
 </head>
 
 <body>
@@ -125,15 +76,15 @@
             <form id="form">
                 <div class="form-group">
                     <label for="name" title="Pflichtfeld">1. Mein Vorname*</label>
-                    <input type="text" class="form-control requiredField" required="required" id="name" placeholder="Gib hier deinen Vornamen ein">
+                    <input type="text" class="form-control requiredField" required id="name" placeholder="Gib hier deinen Vornamen ein">
                 </div>
                 <div class="form-group">
                     <label for="eMail" title="Pflichtfeld">2. Meine E-Mail-Adresse*</label>
-                    <input type="email" class="form-control requiredField " required="required" id="eMail" aria-describedby="emailHelp" placeholder="Gib hier deine E-Mail-Adresse ein">
+                    <input type="email" class="form-control requiredField " required id="eMail" aria-describedby="emailHelp" placeholder="Gib hier deine E-Mail-Adresse ein">
                 </div>
                 <div class="form-group">
                     <label for="interesting">3. Das interessante an mir ist...</label>
-                    <input type="text" class="form-control" id="interesting" placeholder="Ein Wort/kurzer Satz, was dich interessant macht">
+                    <input type="text" class="form-control" id="interesting" placeholder="Eine kurze Beschreibung dessen, was dich interessant macht">
                 </div>
                 <div class="form-group">
                     <label for="motivation">4. Mich motiviert...</label>
@@ -148,7 +99,7 @@
                     <input type="text" class="form-control" id="lastWords">
                 </div>
                 *Pflichtfeld <br>
-                <button type="" id="submit" class="btn btn-primary">Senden</button>
+                <button type="submit" id="submit" class="btn btn-primary">Senden</button>
             </form>
         </div>
 
@@ -169,14 +120,18 @@
             
             
             $('#submit').on('click', function(){
-                alertWarning();
-                document.getElementById("form").style.display="none";
-                return false;
+                $('.alert').remove();
+                if(document.getElementById('name').value == ""){
+                    alertFailure("Bitte gib deinen Vornamen an!");
+                    return false;
+                } else if(document.getElementById('eMail').value == ""){
+                    alertFailure("Bitte gib eine gültige E-Mail-Adresse an!");
+                    return false;
+                } else {
+                    alertWarning();
+                    return false;
+                }
             });
-
-            $('#close').on('click', function(){
-                document.getElementById("form").style.display="block";
-            })
 
             function alertSuccess(){
                 var alert = $('<div class="alert" id="alert" role="alert"></div>');
@@ -189,24 +144,39 @@
                 $('.alert').alert('alert');
             }
 
-            function alertWarning(){
+            function alertFailure(text){
                 var alert = $('<div class="alert" id="alert" role="alert"></div>');
-                $(alert).addClass('alert-warning show fade alert-dismissible');
-                $(alert).append('<p class="text-dark">Bist du sicher, dass du dich bei Blickpunkte bewerben möchtest?</p>');
-                $(alert).append('<hr>');
-                $(alert).append('<button type="" id="send" class="btn btn-success">Ja</button>').on('click', '#send', function(){
-                    $(".alert").remove();
-                    alertSuccess();
-                });
-                $(alert).append('<button type="" id="quit" class="btn btn-danger">Abbrechen</button>').on('click', '#quit', function(){
-                    document.getElementById("form").style.display="block"; 
-                    $().alert('close');
-                    $('.alert').empty();
-                    $('.alert').removeClass('alert-warning');
-                });
+                $(alert).addClass('alert-danger show fade alert-dismissible');
+                $(alert).append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+                $(alert).append('<p class="text-dark">'+text+'</p>');
                 $(alert).insertAfter('#top_nav');
-                $('.alert').alert('alert');
+                return false;
             }
+
+            function alertWarning(){
+                if(!document.getElementById('eMail').value.includes('@')){
+                    console.log(!document.getElementById('eMail').value.includes('@'));
+                    alertFailure('Bitte gib ein gültige E-Mail-Adresse an!');
+                }else{
+                    document.getElementById("form").style.display="none";
+                    var alert = $('<div class="alert" id="alert" role="alert"></div>');
+                    $(alert).addClass('alert-warning show fade alert-dismissible');
+                    $(alert).append('<p class="text-dark">Bist du sicher, dass du dich bei Blickpunkte bewerben möchtest?</p>');
+                    $(alert).append('<hr>');
+                    $(alert).append('<button type="" id="send" class="btn btn-success">Ja</button>').on('click', '#send', function(){
+                        $(".alert").remove();
+                        alertSuccess();
+                    });
+                    $(alert).append('<button type="" id="quit" class="btn btn-danger">Abbrechen</button>').on('click', '#quit', function(){
+                        document.getElementById("form").style.display="block"; 
+                        $().alert('close');
+                        $('.alert').remove();
+                    });
+                    $(alert).insertAfter('#top_nav');
+                    $('.alert').alert('alert');
+                    return false;
+                }
+            };
         </script>
 </body>
 
