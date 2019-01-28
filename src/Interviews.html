@@ -64,7 +64,10 @@
 
                 <div class="mx-auto">
                     <h3>Interviews</h3>
+
                 </div>
+                <button type="button" id="randomInterview" class="btn btn-primary">Zufälliges Interview</button>
+
             </nav>
 
             <div id="interviews">
@@ -78,7 +81,7 @@
                                 <p class="card-text mb-auto" data-bind="text: $data.doc.interviewSummary"></p>
                                 <a data-bind="attr: {href: 'Interview.html?id=' + $data.id}" class="read-more">Weiterlesen</a>
                             </div>
-                            <image data-bind="attr: {src:  $data.doc.startpic}" class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="400" height="250"></image>
+                            <image data-bind="attr: {src:  $data.doc.environmentPic}" class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="400" height="250"></image>
                         </div>
                     </div>
                 </div>
@@ -112,11 +115,29 @@
                     // handle success
                     var vm = new AppViewModel(response.data.rows);
                     ko.applyBindings(vm);
-                    console.log(response.data.total_rows);
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
+
+
+            $("#randomInterview").on("click", function() {
+                axios.get('http://localhost:5984/gmci/_all_docs?include_docs=true')
+                .then(function(response) {
+                    var numOfInterviews = response.data.total_rows;
+
+                    if(numOfInterviews == 0) {
+                        alert("Es sind keine Interviews vorhanden");
+                        return;
+                    }
+
+                    var randNum = Math.floor(Math.random() * numOfInterviews) + 1;
+                    window.location = "Interview.html?id=" + response.data.rows[randNum].id;
+                })
+                .catch(function(error) {
+                    alert("Zufälliges Interview konnte nicht geladen werden");
+                });
+            });
         </script>
 </body>
 

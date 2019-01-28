@@ -112,13 +112,67 @@
                     ]
                 };
 
-                interviewees = ["Briana", "Paula", "Mira", "Hannah", "Leona"];
+
+
+
+                interviewees = [
+                    {
+                        environmentPic: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg/1200px-Hannover_main_station_Ernst-August-Platz_Mitte_Hannover_Germany_01.jpg",
+                        environmentDescription: "Leona hält sich gerne in der Innenstadt von Hannover auf.",
+                        intervieweePic: "Elements/Beruehrungspunkte_Foto_Leona_1.jpg",
+                        intervieweeName: "Leona",
+                        geometryX: 9.73830, // Längen- / Breitengrad
+                        geometryY: 52.37436,
+                    },
+
+                    {
+                        environmentPic: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Hannover_-_Herrenh%C3%A4user_G%C3%A4rten_-_Gro%C3%9Fer_Garten_69.tif/lossy-page1-1600px-Hannover_-_Herrenh%C3%A4user_G%C3%A4rten_-_Gro%C3%9Fer_Garten_69.tif.jpg",
+                        environmentDescription: "Jolie entspannt sich gerne in den Herrenhäuser Gärten.",
+                        intervieweePic: "https://images.unsplash.com/photo-1498529605908-f357a9af7bf5?ixlib=rb-1.2.1&dpr=1&auto=format&fit=crop&w=225&q=60",
+                        intervieweeName: "Jolie",
+                        geometryX: 9.73830, // Längen- / Breitengrad
+                        geometryY: 52.37436,
+                    },
+
+                    {
+                        environmentPic: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Neues_Rathaus_Hannover_M%C3%A4rz_2010.jpg",
+                        environmentDescription: "Briana gefällt die mitteralterliche Architektur in Hannover.",
+                        intervieweePic: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+                        intervieweeName: "Briana",
+                        geometryX: 9.73830, // Längen- / Breitengrad
+                        geometryY: 52.37436,
+                    },
+
+                    {
+                        environmentPic: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Rotterdam_Halfpipe.jpg",
+                        environmentDescription: "Felix ist meist in der Halfpipe zu finden.",
+                        intervieweePic: "https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&dpr=1&auto=format&fit=crop&w=500&q=60",
+                        intervieweeName: "Felix",
+                        geometryX: 9.73830, // Längen- / Breitengrad
+                        geometryY: 52.37436,
+                    },
+
+                    {
+                        environmentPic: "https://upload.wikimedia.org/wikipedia/commons/1/18/Weihnachtsmarkt_Bahnhof.jpg",
+                        environmentDescription: "Abdul genießt die Weihnachtszeit mit der Familie.",
+                        intervieweePic: "https://images.unsplash.com/photo-1521119989659-a83eee488004?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                        intervieweeName: "Abdul",
+                        geometryX: 9.73830, // Längen- / Breitengrad
+                        geometryY: 52.37436,
+                    }
+                ];
 
 
                 $("#initDB").on("click", function() {
-                    interviewees.forEach(name => {
+                    interviewees.forEach(obj => {
                         newInterview = defaultInterview;
-                        newInterview['intervieweeName'] = name;
+
+                        newInterview.environmentPic = obj.environmentPic;
+                        newInterview.environmentDescription = obj.environmentDescription;
+                        newInterview.intervieweePic = obj.intervieweePic;
+                        newInterview.intervieweeName = obj.intervieweeName;
+                        newInterview.geometryX = obj.geometryX;
+                        newInterview.geometryY = obj.geometryY;
 
                         $.ajax({
                             type: "POST",
