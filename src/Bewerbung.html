@@ -19,7 +19,9 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     <style>
-
+        .alert {
+            z-index : 1000000000000000000000000;
+        }
         .disabled {
             pointer-events: none;
             cursor: default;
@@ -91,7 +93,7 @@
             </ul>
 
 
-            <div class="btn-group dropup fixed-bottom">
+            <div class="btn-group dropup">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="share-project">
                     Seite teilen
                 </button>
@@ -105,8 +107,8 @@
 
         <!-- Page Content  -->
         <div id="content">
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" id="top_nav">
                 <button type="button" id="sidebarCollapse" class="btn btn-info">
                     <span><i class="fas fa-bars"></i></span>
                 </button>
@@ -115,10 +117,12 @@
                     <h3>Werde ein Teil von Hannover</h3>
                     <div>Würdest du gerne ein Teil von Blickpunkte werden?</div>
                 </div>
-
+                
             </nav>
+            
+            <div class="alert" id="alert" role="alert"></div>
 
-            <form>
+            <form id="form">
                 <div class="form-group">
                     <label for="name" title="Pflichtfeld">1. Mein Vorname*</label>
                     <input type="text" class="form-control" id="name" placeholder="Gib hier deinen Vornamen ein">
@@ -148,11 +152,7 @@
             </form>
         </div>
 
-        <dialog role="dialog" aria-labelledby="dialog-heading">
-            <button id="close-dialog">Schließen</button>
-            <h2 id="dialog-heading">Info</h2>
-            <p id="info_field"> </p>
-        </dialog>
+        
 
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -166,60 +166,65 @@
         <script src="./js/bp.js"></script>
         <script src="./js/application.js"></script>
         <script>
-            $("#submit").on("click", function() {
-                if (document.getElementById("name").value === "" || document.getElementById("eMail").value === "") {
-                    toggleDialog("error");
+            
+            
+            $('#submit').on('click', function(){
+                $('.alert').remove();
+                if(document.getElementById('eMail').value == ""){
+                    alertFailure("Bitte gib eine gültige E-Mail-Adresse an!");
+                    return false;
+                } else if(document.getElementById('name').value == ""){
+                    alertFailure("Bitte gib deinen Vornamen an!");
                     return false;
                 } else {
-
-                    toggleDialog("email");
-
-
+                    alertWarning();
+                    document.getElementById("form").style.display="none";
+                    return false;
                 }
             });
 
-            function toggleDialog(code) {
-                var dialog = document.querySelector('dialog'),
-                    closebutton = document.getElementById('close-dialog'),
-                    pagebackground = document.querySelector('body');
+            $('#close').on('click', function(){
+                document.getElementById("form").style.display="block";
+            })
 
-                if (!dialog.hasAttribute('open')) {
-                    // show the dialog
-                    dialog.setAttribute('open', 'open');
-                    // after displaying the dialog, focus the closebutton inside it
-                    closebutton.focus();
-                    closebutton.addEventListener('click', toggleDialog);
+            function alertSuccess(){
+                var alert = $('<div class="alert" id="alert" role="alert"></div>');
+                $(alert).addClass('alert-success show fade alert-dismissible');
+                $(alert).append('<p>Deine Daten wurden erfolgreich übermittelt</p>');
+                $(alert).append('<button type="" id="quit" class="btn btn-danger"><a href="index.html"</a>OK</button>').on('click', function(){
+                    window.location = index.html;
+                });
+                $(alert).insertAfter('#top_nav');
+                $('.alert').alert('alert');
+            }
 
-                    // EventListener für ESC-Taste
-                    document.addEventListener('keydown', function(event) {
-                        if (event.keyCode == 27) {
-                            if (code == "email") {
-                                toggleDialog("email");
-                            } else {
-                                toggleDialog();
-                            }
-                        }
-                    }, true);
-                    // only hide the background *after* you've moved focus out of the content that will be "hidden"
-                    var div = document.createElement('div');
-                    div.id = 'backdrop';
-                    document.body.appendChild(div);
-                    if (code == "email") {
-                        document.getElementById("info_field").innerHTML = "Vielen Dank für ihre Bewerbung. Ihr Daten werden jetzt von uns Überprüft und sie bekommen dann eine eMail mit der bestätigung."
-                        document.getElementById("close-dialog").style.marginTop = "43%";
-                    } else if (code == "error") {
-                        document.getElementById("info_field").innerHTML = "Bitte die mit * markierten Pflichtfelder ausfüllen!"
-                        document.getElementById("close-dialog").style.marginTop = "25%";
-                    }
-                } else {
-                    dialog.removeAttribute('open');
-                    var div = document.querySelector('#backdrop');
-                    div.parentNode.removeChild(div);
-                    //lastFocus.focus();
-                    if (code == "email") {
-                        window.location = "index.html";
-                    }
-                }
+            function alertFailure(text){
+                var alert = $('<div class="alert" id="alert" role="alert"></div>');
+                $(alert).addClass('alert-danger show fade alert-dismissible');
+                $(alert).append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+                $(alert).append('<p>'+text+'</p>');
+                $(alert).insertAfter('#top_nav');
+                return false;
+            }
+
+            function alertWarning(){
+                var alert = $('<div class="alert" id="alert" role="alert"></div>');
+                $(alert).addClass('alert-warning show fade alert-dismissible');
+                $(alert).append('<p>Bist du sicher, dass du dich bei Blickpunkte bewerben möchtest?</p>');
+                $(alert).append('<hr>');
+                $(alert).append('<button type="" id="send" class="btn btn-success">Ja</button>').on('click', '#send', function(){
+                    $(".alert").remove();
+                    alertSuccess();
+                });
+                $(alert).append('<button type="" id="quit" class="btn btn-danger">Abbrechen</button>').on('click', '#quit', function(){
+                    document.getElementById("form").style.display="block"; 
+                    $().alert('close');
+                    $('.alert').empty();
+                    $('.alert').removeClass('alert-warning');
+                });
+                $(alert).insertAfter('#top_nav');
+                console.log(alert);
+                $('.alert').alert('alert');
             }
         </script>
 </body>
